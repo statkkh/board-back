@@ -9,11 +9,13 @@ import org.springframework.stereotype.Service;
 import com.kimkh.boardbackproject.dto.request.board.PostBoardRequestDto;
 import com.kimkh.boardbackproject.dto.response.ResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.GetBoardResponseDto;
+import com.kimkh.boardbackproject.dto.response.board.GetFavoriteListResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.GetLatestBoardListResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.PostBoardResponseDto;
 import com.kimkh.boardbackproject.entity.BoardEntity;
 import com.kimkh.boardbackproject.entity.BoardImageEntity;
 import com.kimkh.boardbackproject.entity.BoardViewEntity;
+import com.kimkh.boardbackproject.entity.UserEntity;
 import com.kimkh.boardbackproject.repository.BoardImageRepository;
 import com.kimkh.boardbackproject.repository.BoardRepository;
 import com.kimkh.boardbackproject.repository.BoardViewRepository;
@@ -33,6 +35,7 @@ public class BoardServiceImplement implements BoardService{
 
     @Override
     public ResponseEntity<? super PostBoardResponseDto> postBoard(PostBoardRequestDto dto, String email) {
+
         try {
 
             boolean existedUser = userRepository.existsByEmail(email);
@@ -89,6 +92,27 @@ public class BoardServiceImplement implements BoardService{
         }
 
         return GetLatestBoardListResponseDto.success(boardViewEntities);
+    }
+
+    @Override
+    public ResponseEntity<? super GetFavoriteListResponseDto> getFavoriteList(Integer boardNumber) {
+       
+        List<UserEntity> userEntities = new ArrayList<>();
+        
+        try {
+            
+            boolean hasBoard = boardRepository.exitsByBoardNumber(boardNumber);
+            if(!hasBoard) return GetFavoriteListResponseDto.notExistBoard();
+            
+            userEntities = userRepository.findByBoardFavorite(boardNumber);
+            
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();  
+        }
+
+        return GetFavoriteListResponseDto.success(userEntities);
     }
     
 }

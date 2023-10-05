@@ -7,6 +7,9 @@ import com.kimkh.boardbackproject.entity.BoardEntity;
 
 @Repository
 public interface BoardRepository extends JpaRepository<BoardEntity, Integer>{
+
+    boolean exitsByBoardNumber(Integer boardNumber);
+
     
 
 }

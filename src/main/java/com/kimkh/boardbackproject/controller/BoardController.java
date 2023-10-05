@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kimkh.boardbackproject.dto.request.board.PostBoardRequestDto;
 import com.kimkh.boardbackproject.dto.response.board.GetBoardResponseDto;
+import com.kimkh.boardbackproject.dto.response.board.GetFavoriteListResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.GetLatestBoardListResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.PostBoardResponseDto;
 import com.kimkh.boardbackproject.service.BoardService;
@@ -33,6 +34,14 @@ public class BoardController {
         return response;
     }
 
+    @GetMapping("/{boardNumber}/favorite-list")
+    public ResponseEntity<? super GetFavoriteListResponseDto> getFavoriteList(
+        @PathVariable("boardNumber") Integer boardNumber
+    ){
+        ResponseEntity<? super GetFavoriteListResponseDto> response = boardService.getFavoriteList(boardNumber);
+        return response;
+    }
+
     @GetMapping("/latest-list")
     public ResponseEntity<? super GetLatestBoardListResponseDto> getLatestBoardList() {
         ResponseEntity<? super GetLatestBoardListResponseDto> response = boardService.getLatestBoardList();
@@ -47,4 +56,6 @@ public class BoardController {
         ResponseEntity<? super PostBoardResponseDto> response = boardService.postBoard(requestBody, email);
         return response;
     }    
+
+
 }
