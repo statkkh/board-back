@@ -8,5 +8,9 @@ import com.kimkh.boardbackproject.entity.primaryKey.FavoritePk;
 
 @Repository
 public interface FavoriteRepository extends JpaRepository<FavoriteEntity , FavoritePk>{
+
+    boolean exitsByEmailUserEmailAndBoardNumber(String useEmail, Integer boardNumber);
+
+        
     
 }

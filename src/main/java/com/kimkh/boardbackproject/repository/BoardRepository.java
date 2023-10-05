@@ -10,6 +10,4 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Integer>{
 
     boolean exitsByBoardNumber(Integer boardNumber);
 
-    
-
 }
