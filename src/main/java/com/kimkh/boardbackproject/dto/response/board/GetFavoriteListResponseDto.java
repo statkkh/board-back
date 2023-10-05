@@ -23,7 +23,6 @@ public class GetFavoriteListResponseDto extends ResponseDto{
         super(code, message);
         this.favoriteList = FavoriteListItem.getList(userEntities);
 
-
     }
     public static ResponseEntity<GetFavoriteListResponseDto> success(List<UserEntity> userEntities) {
         GetFavoriteListResponseDto result = new GetFavoriteListResponseDto(ResponseCode.SUCCESS, ResponseMessage.SUCCESS, userEntities);

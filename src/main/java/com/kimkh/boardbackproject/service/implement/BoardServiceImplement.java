@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.kimkh.boardbackproject.dto.request.board.PostBoardRequestDto;
 import com.kimkh.boardbackproject.dto.response.ResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.GetBoardResponseDto;
+import com.kimkh.boardbackproject.dto.response.board.GetCommentListResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.GetFavoriteListResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.GetLatestBoardListResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.PostBoardResponseDto;
@@ -32,9 +33,11 @@ import lombok.RequiredArgsConstructor;
 public class BoardServiceImplement implements BoardService{
 
     private final UserRepository userRepository;
+   
     private final BoardRepository boardRepository;
     private final BoardViewRepository boardViewRepository;
-    private final BoardImageRepository boardImageRepository;    
+    private final BoardImageRepository boardImageRepository;
+
     private final FavoriteRepository favoriteRepository;
 
     @Override
@@ -58,6 +61,7 @@ public class BoardServiceImplement implements BoardService{
             }
 
             boardImageRepository.saveAll(boardImageEntities);            
+
         } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.databaseError();            
@@ -67,6 +71,7 @@ public class BoardServiceImplement implements BoardService{
 
     @Override
     public ResponseEntity<? super GetBoardResponseDto> getBoard(Integer boardNumber) {
+
         BoardViewEntity boardViewEntity = null;
         List<BoardImageEntity> boardImageEntities = new ArrayList<>();
 
@@ -75,6 +80,7 @@ public class BoardServiceImplement implements BoardService{
             if (boardViewEntity == null) return GetBoardResponseDto.notExistBoard();
 
             boardImageEntities = boardImageRepository.findByBoardNumber(boardNumber);
+
         } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.databaseError();     
@@ -105,7 +111,7 @@ public class BoardServiceImplement implements BoardService{
         
         try {
             
-            boolean existBoard = boardRepository.exitsByBoardNumber(boardNumber);
+            boolean existBoard = boardRepository.existsByBoardNumber(boardNumber);
             if(!existBoard) return GetFavoriteListResponseDto.notExistBoard();
             
             userEntities = userRepository.findByBoardFavorite(boardNumber);
@@ -125,13 +131,14 @@ public class BoardServiceImplement implements BoardService{
         
         try {
             
-            boolean existBoard = boardRepository.exitsByBoardNumber(boardNumber);
+            boolean existBoard = boardRepository.existsByBoardNumber(boardNumber);
             if(!existBoard) return PutFavoriteResponseDto.notExistBoard();
 
             boolean exitsByEmail = userRepository.existsByEmail(email);
             if(!exitsByEmail)  return PutFavoriteResponseDto.notExistUser();  
 
-            boolean isFavorite = favoriteRepository.exitsByEmailUserEmailAndBoardNumber(email, boardNumber);
+            boolean isFavorite = favoriteRepository.existsByUserEmailAndBoardNumber(email, boardNumber);
+
             FavoriteEntity favoriteEntity = new FavoriteEntity(email, boardNumber);
             
             // description : favorite exist or notexist //
@@ -144,6 +151,12 @@ public class BoardServiceImplement implements BoardService{
         }
 
         return PutFavoriteResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super GetCommentListResponseDto> getCommentList(Integer boardNumber) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getCommentList'");
     }
     
 }

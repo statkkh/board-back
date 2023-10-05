@@ -33,7 +33,7 @@ public class BoardEntity {
     private int favoriteCount;
     private String writerEmail;
     
-        public BoardEntity(PostBoardRequestDto dto, String email) {
+    public BoardEntity(PostBoardRequestDto dto, String email) {
         Date now = Date.from(Instant.now());
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String writeDatetime = simpleDateFormat.format(now);
