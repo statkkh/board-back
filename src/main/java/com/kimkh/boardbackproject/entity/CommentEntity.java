@@ -25,7 +25,6 @@ import lombok.NoArgsConstructor;
 public class CommentEntity {
     
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int commentNumber;
     private int boardNumber;
     private String userEmail;
     private String contents;
