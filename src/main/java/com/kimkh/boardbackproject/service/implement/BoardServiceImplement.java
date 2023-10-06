@@ -136,7 +136,6 @@ public class BoardServiceImplement implements BoardService{
     @Override
     public ResponseEntity<? super PutFavoriteResponseDto> putFavorite(Integer boardNumber, String email) {
         
-        
         try {
             
             boolean existBoard = boardRepository.existsByBoardNumber(boardNumber);
@@ -190,11 +189,10 @@ public class BoardServiceImplement implements BoardService{
             if(!existsBoard) return PostCommentResponseDto.notExistBoard();
 
             boolean existsUser = userRepository.existsByEmail(email);
-            if(!existsUser) return PostCommentResponseDto.notExistBoard();
+            if(!existsUser) return PostCommentResponseDto.notExistUser();
 
             CommentEntity commentEntity = new CommentEntity(dto, boardNumber, email);
             commentRepository.save(commentEntity);
-
             
         } catch (Exception exception) {
             exception.printStackTrace();
