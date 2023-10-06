@@ -18,6 +18,7 @@ import com.kimkh.boardbackproject.dto.response.board.GetFavoriteListResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.GetLatestBoardListResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.PostBoardResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.PutFavoriteResponseDto;
+import com.kimkh.boardbackproject.dto.response.board.GetCommentListResponseDto;
 import com.kimkh.boardbackproject.service.BoardService;
 
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/v1/board")
 @RequiredArgsConstructor
 public class BoardController {
+    
 
     private final BoardService boardService;
     
@@ -42,6 +44,14 @@ public class BoardController {
         @PathVariable("boardNumber") Integer boardNumber
     ){
         ResponseEntity<? super GetFavoriteListResponseDto> response = boardService.getFavoriteList(boardNumber);
+        return response;
+    }
+
+    @GetMapping("/{boardNumber}/comment-list")
+    public ResponseEntity <? super GetCommentListResponseDto> getCommentList(
+        @PathVariable("boardNumber") Integer boardNumber
+    ){
+        ResponseEntity <? super GetCommentListResponseDto> response = boardService.getCommentList(boardNumber);
         return response;
     }
 

@@ -22,8 +22,10 @@ import com.kimkh.boardbackproject.entity.UserEntity;
 import com.kimkh.boardbackproject.repository.BoardImageRepository;
 import com.kimkh.boardbackproject.repository.BoardRepository;
 import com.kimkh.boardbackproject.repository.BoardViewRepository;
+import com.kimkh.boardbackproject.repository.CommentRepository;
 import com.kimkh.boardbackproject.repository.FavoriteRepository;
 import com.kimkh.boardbackproject.repository.UserRepository;
+import com.kimkh.boardbackproject.repository.resultSet.CommentListResultSet;
 import com.kimkh.boardbackproject.service.BoardService;
 
 import lombok.RequiredArgsConstructor;
@@ -35,6 +37,7 @@ public class BoardServiceImplement implements BoardService{
     private final UserRepository userRepository;
    
     private final BoardRepository boardRepository;
+    private final CommentRepository commentRepository;
     private final BoardViewRepository boardViewRepository;
     private final BoardImageRepository boardImageRepository;
 
@@ -155,8 +158,22 @@ public class BoardServiceImplement implements BoardService{
 
     @Override
     public ResponseEntity<? super GetCommentListResponseDto> getCommentList(Integer boardNumber) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getCommentList'");
+        
+        List<CommentListResultSet> resultSets = new ArrayList<>();
+
+        try {
+
+            boolean existedBoard = boardRepository.existsByBoardNumber(boardNumber);
+            if(!existedBoard) return GetCommentListResponseDto.notExistBoard(resultSets);
+
+            resultSets = commentRepository.findByCommentList(boardNumber);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return GetCommentListResponseDto.success(resultSets);
     }
     
 }
