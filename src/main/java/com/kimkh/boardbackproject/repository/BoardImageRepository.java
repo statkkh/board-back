@@ -14,7 +14,7 @@ public interface BoardImageRepository extends JpaRepository<BoardImageEntity, In
 
     List<BoardImageEntity> findByBoardNumber(Integer boardNumber);
 
-    @Transactional
+    @Transactional 
     void deleteByBoardNumber(Integer boardNumber);
     
 }
