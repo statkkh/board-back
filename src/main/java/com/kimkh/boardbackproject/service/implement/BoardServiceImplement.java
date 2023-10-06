@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.kimkh.boardbackproject.dto.request.board.PatchBoardRequestDto;
 import com.kimkh.boardbackproject.dto.request.board.PostBoardRequestDto;
 import com.kimkh.boardbackproject.dto.request.board.PostCommentRequestDto;
 import com.kimkh.boardbackproject.dto.response.ResponseDto;
@@ -13,6 +14,7 @@ import com.kimkh.boardbackproject.dto.response.board.GetBoardResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.GetCommentListResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.GetFavoriteListResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.GetLatestBoardListResponseDto;
+import com.kimkh.boardbackproject.dto.response.board.PatchBoardResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.PostBoardResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.PostCommentResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.PutFavoriteResponseDto;
@@ -200,6 +202,44 @@ public class BoardServiceImplement implements BoardService{
         }
 
         return PostCommentResponseDto.success();
+
+    }
+
+    @Override
+    public ResponseEntity<? super PatchBoardResponseDto> patchBoard(PatchBoardRequestDto dto, Integer boardNumber, String email) {
+
+        try {
+
+            boolean existsUser = userRepository.existsByEmail(email);
+            if(!existsUser) return PatchBoardResponseDto.notExistUser();
+            // description : Patch 시 boardEntity 필요 //
+            BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
+            if(boardEntity == null) return PatchBoardResponseDto.notExistBoard();
+            
+            boolean equalWriter = boardEntity.getWriterEmail().equals(email);
+            if(!equalWriter) return PatchBoardResponseDto.noPermission();
+
+            boardEntity.patch(dto);
+            boardRepository.save(boardEntity);
+            //description : 기존의 게시물 번호 삭제
+            boardImageRepository.deleteByBoardNumber(boardNumber);
+
+            List<String > boardImageList = dto.getBoardImageList();
+            List<BoardImageEntity> boardImageEntities = new ArrayList<>();
+
+            for(String boardImage : boardImageList){
+                BoardImageEntity boardImageEntity = new BoardImageEntity(boardNumber, boardImage);
+                boardImageEntities.add(boardImageEntity);
+            }
+            
+            boardImageRepository.saveAll(boardImageEntities);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return PatchBoardResponseDto.success();
 
     }
     

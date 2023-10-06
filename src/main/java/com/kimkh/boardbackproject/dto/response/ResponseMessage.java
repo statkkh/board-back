@@ -10,9 +10,10 @@ public interface ResponseMessage {
     String DUPLICATED_TELNUMBER = "Duplicated telNumber number";
     String NOT_EXIST_USER = "This user does exits";
     String NOT_EXIST_BOARD = "This board does exists";  
-
+    String NO_PERMISSION = "Do not permission.";
     String SIGN_IN_FAILED = "Login information mismatch";
 
     String DATABASE_ERROR = "DataBase error.";
+
     
 }

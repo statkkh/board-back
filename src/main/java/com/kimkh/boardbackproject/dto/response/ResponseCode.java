@@ -12,6 +12,8 @@ public interface ResponseCode {
 
     String SIGN_IN_FAILED = "SF";
 
-    String DATABASE_ERROR = "DBE";    
+    String DATABASE_ERROR = "DBE"; 
+    
+    String NO_PERMISSION = "NP";
 
 }

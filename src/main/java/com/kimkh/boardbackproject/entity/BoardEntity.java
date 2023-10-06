@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.kimkh.boardbackproject.dto.request.board.PatchBoardRequestDto;
 import com.kimkh.boardbackproject.dto.request.board.PostBoardRequestDto;
 
 import lombok.AllArgsConstructor;
@@ -45,5 +46,10 @@ public class BoardEntity {
         this.commentCount = 0;
         this.favoriteCount = 0;
         this.writerEmail = email;
+    }
+
+    public void patch(PatchBoardRequestDto dto){
+        this.title = dto.getTitle();
+        this.contents = dto.getContent();
     }
 }
