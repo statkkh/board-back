@@ -18,7 +18,7 @@ import com.kimkh.boardbackproject.dto.response.board.PutFavoriteResponseDto;
 public interface BoardService {
     ResponseEntity<? super PostBoardResponseDto> postBoard(PostBoardRequestDto dto, String email);
     
-    ResponseEntity<? super PostCommentResponseDto > postComment(PostCommentRequestDto requestBody, Integer boardNumber, String email);
+    ResponseEntity<? super PostCommentResponseDto > postComment(PostCommentRequestDto dto, Integer boardNumber, String email);
 
     ResponseEntity<? super GetBoardResponseDto> getBoard(Integer boardNumber);
     ResponseEntity<? super GetFavoriteListResponseDto> getFavoriteList(Integer boardNumber);
