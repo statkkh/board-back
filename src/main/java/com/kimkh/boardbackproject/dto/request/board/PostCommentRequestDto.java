@@ -10,8 +10,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class PostCommentRequestDto {
-    // 문자열만 지정
-    @NotBlank
+    
+    @NotBlank // 문자열만 지정
     private String content;
          
 }
