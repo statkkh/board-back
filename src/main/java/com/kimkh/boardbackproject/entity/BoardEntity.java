@@ -51,5 +51,6 @@ public class BoardEntity {
     public void patch(PatchBoardRequestDto dto){
         this.title = dto.getTitle();
         this.contents = dto.getContent();
-    }
+    }    
+
 }
