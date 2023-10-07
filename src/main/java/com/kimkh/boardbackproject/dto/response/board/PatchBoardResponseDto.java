@@ -12,6 +12,8 @@ import lombok.Getter;
 @Getter
 public class PatchBoardResponseDto extends ResponseDto {
     
+
+
     private PatchBoardResponseDto(String code, String message){
         super(code, message);
     }
