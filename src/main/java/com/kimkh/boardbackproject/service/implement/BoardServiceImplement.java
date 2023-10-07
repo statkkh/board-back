@@ -204,41 +204,42 @@ public class BoardServiceImplement implements BoardService{
     }
 
     @Override
-    public ResponseEntity<? super PatchBoardResponseDto> patchBoard(PatchBoardRequestDto dto, Integer boardNumber, String email) {
-
+    public ResponseEntity<? super PatchBoardResponseDto> patchBoard(PatchBoardRequestDto dto, Integer boardNumber,  String email) {
+        
+        
         try {
 
-            boolean existsUser = userRepository.existsByEmail(email);
-            if(!existsUser) return PatchBoardResponseDto.notExistUser();
-            // description : Patch 시 boardEntity 필요 //
+            boolean existedUser = userRepository.existsByEmail(email);
+            if (!existedUser) return PatchBoardResponseDto.notExistUser();
+
             BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
-            if(boardEntity == null) return PatchBoardResponseDto.notExistBoard();
-            
+            if (boardEntity == null) return PatchBoardResponseDto.notExistBoard();
+
             boolean equalWriter = boardEntity.getWriterEmail().equals(email);
-            if(!equalWriter) return PatchBoardResponseDto.noPermission();
+            if (!equalWriter) return PatchBoardResponseDto.noPermission();
 
             boardEntity.patch(dto);
             boardRepository.save(boardEntity);
-            //description : 기존의 게시물 번호 삭제
+
+            List<String> boardImageList = dto.getBoardImageList();
+
             boardImageRepository.deleteByBoardNumber(boardNumber);
 
-            List<String > boardImageList = dto.getBoardImageList();
             List<BoardImageEntity> boardImageEntities = new ArrayList<>();
-
-            for(String boardImage : boardImageList){
+            for (String boardImage: boardImageList) {
                 BoardImageEntity boardImageEntity = new BoardImageEntity(boardNumber, boardImage);
                 boardImageEntities.add(boardImageEntity);
             }
-            
-            boardImageRepository.saveAll(boardImageEntities);
 
+            boardImageRepository.saveAll(boardImageEntities);  
+                     
         } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
 
-        return PatchBoardResponseDto.success();
-
+        return  PatchBoardResponseDto.success();
     }
+
     
 }
