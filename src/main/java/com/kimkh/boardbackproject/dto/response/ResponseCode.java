@@ -16,4 +16,6 @@ public interface ResponseCode {
     
     String NO_PERMISSION = "NP";
 
+    
+
 }

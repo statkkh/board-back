@@ -5,6 +5,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.kimkh.boardbackproject.dto.request.auth.SignUpRequestDto;
+import com.kimkh.boardbackproject.dto.request.user.PatchNicknameRequestDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -35,4 +36,8 @@ public class UserEntity {
         this.addressDetail = dto.getAddressDetail();
         this.agreedPersonal = dto.getAgreedPersonal();
     }    
+
+    public void patchNickname(PatchNicknameRequestDto dto){
+        this.nickname = dto.getNickName();
+    }
 }
