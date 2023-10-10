@@ -15,6 +15,7 @@ import com.kimkh.boardbackproject.dto.response.board.GetBoardResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.GetCommentListResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.GetFavoriteListResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.GetLatestBoardListResponseDto;
+import com.kimkh.boardbackproject.dto.response.board.GetUserBoardListResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.PatchBoardResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.PostBoardResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.PostCommentResponseDto;
@@ -182,6 +183,26 @@ public class BoardServiceImplement implements BoardService{
     }
 
     @Override
+    public ResponseEntity<? super GetUserBoardListResponseDto> getUserBoardList(String email) {
+
+        List<BoardViewEntity> boardViewEntities = new ArrayList<>();
+
+       try {
+        
+        boolean existsUser = userRepository.existsByEmail(email);
+        if(!existsUser) return GetUserBoardListResponseDto.notExistUser();
+
+        boardViewEntities = boardViewRepository.findByWriterEmailOrderByWriteDatetime();
+
+       } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+       }
+
+       return GetUserBoardListResponseDto.success(boardViewEntities);
+    }
+    
+    @Override
     public ResponseEntity<? super PostCommentResponseDto> postComment(PostCommentRequestDto dto, Integer boardNumber,String email) {
 
         try {
@@ -266,6 +287,7 @@ public class BoardServiceImplement implements BoardService{
         }
         return DeleteBoardResponseDto.success(null);
     }
+
 
     
 }
