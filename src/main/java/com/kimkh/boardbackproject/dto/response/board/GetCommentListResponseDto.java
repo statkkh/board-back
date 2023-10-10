@@ -28,12 +28,9 @@ public class GetCommentListResponseDto extends ResponseDto{
         return ResponseEntity.status(HttpStatus.OK).body(result);    
     }
 
-    public static ResponseEntity<ResponseDto> notExistBoard(List<CommentListResultSet> resultSets){
+    public static ResponseEntity<ResponseDto> notExistBoard(){
         ResponseDto result = new ResponseDto(ResponseCode.NOT_EXIST_BOARD, ResponseMessage.NOT_EXIST_BOARD);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);    
     }    
-    // public static ResponseEntity<ResponseDto> notExistUser(List<CommentListResultSet> resultSets){
-    //     ResponseDto result = new ResponseDto(ResponseCode.NOT_EXIST_USER, ResponseMessage.NOT_EXIST_USER);
-    //     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);    
-    // } 
+
 }
