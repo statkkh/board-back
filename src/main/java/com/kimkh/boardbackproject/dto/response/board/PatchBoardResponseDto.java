@@ -27,7 +27,7 @@ public class PatchBoardResponseDto extends ResponseDto {
     }
  
     public static ResponseEntity<ResponseDto> notExistBoard(){
-        ResponseDto result = new ResponseDto(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
+        ResponseDto result = new ResponseDto(ResponseCode.NOT_EXIST_BOARD, ResponseMessage.NOT_EXIST_BOARD);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);        
     }
 
