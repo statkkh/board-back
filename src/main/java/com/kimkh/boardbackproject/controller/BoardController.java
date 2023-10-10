@@ -4,6 +4,7 @@ import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kimkh.boardbackproject.dto.request.board.PatchBoardRequestDto;
 import com.kimkh.boardbackproject.dto.request.board.PostBoardRequestDto;
 import com.kimkh.boardbackproject.dto.request.board.PostCommentRequestDto;
+import com.kimkh.boardbackproject.dto.response.board.DeleteBoardResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.GetBoardResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.GetFavoriteListResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.GetLatestBoardListResponseDto;
@@ -103,5 +105,13 @@ public class BoardController {
         return response;
     }
 
+    @DeleteMapping("/{boardNumber}")
+    public ResponseEntity<? super DeleteBoardResponseDto> deleteBoard(
+        @PathVariable("boardNumber") Integer boardNumberInteger,
+        @AuthenticationPrincipal String email 
+    ){
+        ResponseEntity<? super DeleteBoardResponseDto> response = boardService.deleteBoard(boardNumberInteger, email);
+        return response;
+    }
 
 }
