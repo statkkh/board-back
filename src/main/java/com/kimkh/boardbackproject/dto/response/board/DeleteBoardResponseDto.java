@@ -1,6 +1,6 @@
 package com.kimkh.boardbackproject.dto.response.board;
 
-import java.util.List;
+
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import com.kimkh.boardbackproject.dto.response.ResponseCode;
 import com.kimkh.boardbackproject.dto.response.ResponseDto;
 import com.kimkh.boardbackproject.dto.response.ResponseMessage;
-import com.kimkh.boardbackproject.entity.UserEntity;
+
 
 import lombok.Getter;
 
@@ -19,7 +19,7 @@ public class DeleteBoardResponseDto extends ResponseDto{
         super(code, message);
     }
 
-    public static ResponseEntity<DeleteBoardResponseDto> success(List<UserEntity> userEntities) {
+    public static ResponseEntity<DeleteBoardResponseDto> success() {
         DeleteBoardResponseDto result = new DeleteBoardResponseDto(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     } 
