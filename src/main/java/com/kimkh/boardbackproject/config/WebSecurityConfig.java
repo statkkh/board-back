@@ -39,6 +39,7 @@ public class WebSecurityConfig {
         .authorizeRequests()
         .antMatchers("/", "/file/**", "/api/v1/auth/**", "/api/v1/search/**").permitAll()
         .antMatchers(HttpMethod.GET, "/api/v1/board/**", "/api/v1/user/*", "/file/image/*").permitAll()
+        .antMatchers(HttpMethod.PATCH, "/api/board/increase-view/count/*").permitAll()
         .anyRequest().authenticated().and()
         .exceptionHandling().authenticationEntryPoint(new FailedAuthenticationEntryPoint());
 

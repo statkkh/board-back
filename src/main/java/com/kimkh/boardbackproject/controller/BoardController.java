@@ -22,6 +22,7 @@ import com.kimkh.boardbackproject.dto.response.board.GetBoardResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.GetFavoriteListResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.GetLatestBoardListResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.GetUserBoardListResponseDto;
+import com.kimkh.boardbackproject.dto.response.board.IncreaseViewCountResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.PatchBoardResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.PostBoardResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.PostCommentResponseDto;
@@ -113,7 +114,13 @@ public class BoardController {
         ResponseEntity< ? super PatchBoardResponseDto> response = boardService.patchBoard(requestbody, boardNumber, email);
         return response;
     }
-
+    @PatchMapping("/increase-view-count/{boardNumber}")
+    public ResponseEntity<? super IncreaseViewCountResponseDto> increaseViewCount(
+        @PathVariable("boardNumber") Integer boardNumber
+    ){
+        ResponseEntity< ? super IncreaseViewCountResponseDto> response = boardService.increaseViewCount(boardNumber);
+        return response;
+    }
     @DeleteMapping("/{boardNumber}")
     public ResponseEntity<? super DeleteBoardResponseDto> deleteBoard(
         @PathVariable("boardNumber") Integer boardNumberInteger,

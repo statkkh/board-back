@@ -12,6 +12,7 @@ import com.kimkh.boardbackproject.dto.response.board.GetCommentListResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.GetFavoriteListResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.GetLatestBoardListResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.GetUserBoardListResponseDto;
+import com.kimkh.boardbackproject.dto.response.board.IncreaseViewCountResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.PatchBoardResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.PostBoardResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.PostCommentResponseDto;
@@ -33,4 +34,6 @@ public interface BoardService {
     ResponseEntity<? super PatchBoardResponseDto > patchBoard(PatchBoardRequestDto dto, Integer boardNumber, String email);
 
     ResponseEntity<? super DeleteBoardResponseDto> deleteBoard(Integer boardNumber, String email);
+
+    ResponseEntity<? super  IncreaseViewCountResponseDto > increaseViewCount(Integer boardNumber);
 }

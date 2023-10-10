@@ -16,6 +16,7 @@ import com.kimkh.boardbackproject.dto.response.board.GetCommentListResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.GetFavoriteListResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.GetLatestBoardListResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.GetUserBoardListResponseDto;
+import com.kimkh.boardbackproject.dto.response.board.IncreaseViewCountResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.PatchBoardResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.PostBoardResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.PostCommentResponseDto;
@@ -140,8 +141,8 @@ public class BoardServiceImplement implements BoardService{
         
         try {
             
-            boolean existBoard = boardRepository.existsByBoardNumber(boardNumber);
-            if(!existBoard) return PutFavoriteResponseDto.notExistBoard();
+            BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
+            if(boardEntity == null) return PutFavoriteResponseDto.notExistBoard();
 
             boolean exitsByEmail = userRepository.existsByEmail(email);
             if(!exitsByEmail)  return PutFavoriteResponseDto.notExistUser();  
@@ -151,13 +152,23 @@ public class BoardServiceImplement implements BoardService{
             FavoriteEntity favoriteEntity = new FavoriteEntity(email, boardNumber);
             
             // description : favorite exist or notexist //
-            if(isFavorite) favoriteRepository.delete(favoriteEntity);
-            if(!isFavorite) favoriteRepository.save(favoriteEntity);
+            if(isFavorite) {
+                favoriteRepository.delete(favoriteEntity);
+                boardEntity.decreaseFavoriteCount();
+            }
+            else{
+                favoriteRepository.save(favoriteEntity);
+                boardEntity.increaseCommentCount();
+            }
+
+            boardRepository.save(boardEntity);
 
         } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
+
+        
 
         return PutFavoriteResponseDto.success();
     }
@@ -207,14 +218,17 @@ public class BoardServiceImplement implements BoardService{
 
         try {
             
-            boolean existsBoard = boardRepository.existsByBoardNumber(boardNumber);
-            if(!existsBoard) return PostCommentResponseDto.notExistBoard();
+            BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
+            if( boardEntity == null) return PostCommentResponseDto.notExistBoard();
 
             boolean existsUser = userRepository.existsByEmail(email);
             if(!existsUser) return PostCommentResponseDto.notExistUser();
 
             CommentEntity commentEntity = new CommentEntity(dto, boardNumber, email);
             commentRepository.save(commentEntity);
+
+            boardEntity.increaseCommentCount();
+            boardRepository.save(boardEntity);
             
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -285,7 +299,21 @@ public class BoardServiceImplement implements BoardService{
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
-        return DeleteBoardResponseDto.success(null);
+        return DeleteBoardResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super IncreaseViewCountResponseDto> increaseViewCount(Integer boardNumber) {
+
+        try {
+            BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
+            if(boardEntity == null) return IncreaseViewCountResponseDto.notExistBoard();    
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return IncreaseViewCountResponseDto.success();
+        
     }
 
 
