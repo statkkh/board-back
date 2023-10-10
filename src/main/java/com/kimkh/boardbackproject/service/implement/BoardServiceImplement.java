@@ -122,8 +122,8 @@ public class BoardServiceImplement implements BoardService{
         
         try {
             
-            boolean existBoard = boardRepository.existsByBoardNumber(boardNumber);
-            if(!existBoard) return GetFavoriteListResponseDto.notExistBoard();
+            boolean existedBoard = boardRepository.existsByBoardNumber(boardNumber);
+            if(!existedBoard) return GetFavoriteListResponseDto.notExistBoard();
             
             userEntities = userRepository.findByBoardFavorite(boardNumber);
             
@@ -181,7 +181,7 @@ public class BoardServiceImplement implements BoardService{
         try {
 
             boolean existedBoard = boardRepository.existsByBoardNumber(boardNumber);
-            if(!existedBoard) return GetCommentListResponseDto.notExistBoard(resultSets);
+            if(!existedBoard) return GetCommentListResponseDto.notExistBoard();
 
             resultSets = commentRepository.findByCommentList(boardNumber);
 
@@ -200,10 +200,10 @@ public class BoardServiceImplement implements BoardService{
 
        try {
         
-        boolean existsUser = userRepository.existsByEmail(email);
-        if(!existsUser) return GetUserBoardListResponseDto.notExistUser();
+        boolean existedUser = userRepository.existsByEmail(email);
+        if(!existedUser) return GetUserBoardListResponseDto.notExistUser();
 
-        boardViewEntities = boardViewRepository.findByWriterEmailOrderByWriteDatetime();
+        boardViewEntities = boardViewRepository.findByWriterEmailOrderByWriteDatetimeDesc();
 
        } catch (Exception exception) {
             exception.printStackTrace();
@@ -221,8 +221,8 @@ public class BoardServiceImplement implements BoardService{
             BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
             if( boardEntity == null) return PostCommentResponseDto.notExistBoard();
 
-            boolean existsUser = userRepository.existsByEmail(email);
-            if(!existsUser) return PostCommentResponseDto.notExistUser();
+            boolean existedUser = userRepository.existsByEmail(email);
+            if(!existedUser) return PostCommentResponseDto.notExistUser();
 
             CommentEntity commentEntity = new CommentEntity(dto, boardNumber, email);
             commentRepository.save(commentEntity);
@@ -277,12 +277,29 @@ public class BoardServiceImplement implements BoardService{
     }
 
     @Override
+    public ResponseEntity<? super IncreaseViewCountResponseDto> increaseViewCount(Integer boardNumber) {
+
+        try {
+            BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
+            if(boardEntity == null) return IncreaseViewCountResponseDto.notExistBoard();    
+
+            boardEntity.increaseViewCount();
+            boardRepository.save(boardEntity);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return IncreaseViewCountResponseDto.success();
+        
+    }
+
+    @Override
     public ResponseEntity<? super DeleteBoardResponseDto> deleteBoard(Integer boardNumber, String email) {
 
         try {
             
-            boolean existsUser = userRepository.existsByEmail(email);
-            if(!existsUser) return DeleteBoardResponseDto.notExistUser();
+            boolean existedUser = userRepository.existsByEmail(email);
+            if(!existedUser) return DeleteBoardResponseDto.notExistUser();
 
             BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
             if(boardEntity == null) return DeleteBoardResponseDto.notExistBoard();
@@ -302,20 +319,5 @@ public class BoardServiceImplement implements BoardService{
         return DeleteBoardResponseDto.success();
     }
 
-    @Override
-    public ResponseEntity<? super IncreaseViewCountResponseDto> increaseViewCount(Integer boardNumber) {
-
-        try {
-            BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
-            if(boardEntity == null) return IncreaseViewCountResponseDto.notExistBoard();    
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return ResponseDto.databaseError();
-        }
-        return IncreaseViewCountResponseDto.success();
         
-    }
-
-
-    
 }
