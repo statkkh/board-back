@@ -15,7 +15,7 @@ import com.kimkh.boardbackproject.service.FileService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("")
+@RequestMapping("/file")
 @RequiredArgsConstructor
 public class FileController {
     
