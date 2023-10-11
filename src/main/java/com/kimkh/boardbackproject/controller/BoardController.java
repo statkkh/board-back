@@ -84,7 +84,7 @@ public class BoardController {
         return response;
     }
 
-    @GetMapping(value={"/searchlist/{searchWord}" , "/searchlist/{searchWord}/{preSearchWord}"})
+    @GetMapping(value={"/search-list/{searchWord}" , "/searchlist/{searchWord}/{preSearchWord}"})
     public ResponseEntity<? super GetSearchBoardListReponseDto> getSearchBoardList(
        @PathVariable("searchWrod") String searchWord,
        @PathVariable(value = "preSearchWord", required = false) String preSearchWord
