@@ -6,6 +6,7 @@ import javax.persistence.Table;
 
 import com.kimkh.boardbackproject.dto.request.auth.SignUpRequestDto;
 import com.kimkh.boardbackproject.dto.request.user.PatchNicknameRequestDto;
+import com.kimkh.boardbackproject.dto.request.user.PatchProfileImageRequestDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -39,5 +40,9 @@ public class UserEntity {
 
     public void patchNickname(PatchNicknameRequestDto dto){
         this.nickname = dto.getNickName();
+    }
+
+    public void patchProfileImage(PatchProfileImageRequestDto dto){
+        this.profileImageUrl = dto.getProfileImage();
     }
 }
