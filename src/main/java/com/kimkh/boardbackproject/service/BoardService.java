@@ -11,6 +11,7 @@ import com.kimkh.boardbackproject.dto.response.board.GetBoardResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.GetCommentListResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.GetFavoriteListResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.GetLatestBoardListResponseDto;
+import com.kimkh.boardbackproject.dto.response.board.GetSearchBoardListReponseDto;
 import com.kimkh.boardbackproject.dto.response.board.GetTop3BoardListResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.GetUserBoardListResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.IncreaseViewCountResponseDto;
@@ -30,6 +31,7 @@ public interface BoardService {
     ResponseEntity<? super GetLatestBoardListResponseDto> getLatestBoardList();    
     ResponseEntity <? super GetUserBoardListResponseDto> getUserBoardList( String email);
     ResponseEntity <? super  GetTop3BoardListResponseDto> getTop3BoardList();
+    ResponseEntity <?super GetSearchBoardListReponseDto> getSearchBoardList(String searchWord, String preSearchWord);
     
     ResponseEntity<? super PutFavoriteResponseDto > putFavorite(Integer boardNumber, String email);
 

@@ -19,6 +19,7 @@ import com.kimkh.boardbackproject.dto.response.board.GetBoardResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.GetCommentListResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.GetFavoriteListResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.GetLatestBoardListResponseDto;
+import com.kimkh.boardbackproject.dto.response.board.GetSearchBoardListReponseDto;
 import com.kimkh.boardbackproject.dto.response.board.GetTop3BoardListResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.GetUserBoardListResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.IncreaseViewCountResponseDto;
@@ -31,12 +32,14 @@ import com.kimkh.boardbackproject.entity.BoardImageEntity;
 import com.kimkh.boardbackproject.entity.BoardViewEntity;
 import com.kimkh.boardbackproject.entity.CommentEntity;
 import com.kimkh.boardbackproject.entity.FavoriteEntity;
+import com.kimkh.boardbackproject.entity.SearchLogEntity;
 import com.kimkh.boardbackproject.entity.UserEntity;
 import com.kimkh.boardbackproject.repository.BoardImageRepository;
 import com.kimkh.boardbackproject.repository.BoardRepository;
 import com.kimkh.boardbackproject.repository.BoardViewRepository;
 import com.kimkh.boardbackproject.repository.CommentRepository;
 import com.kimkh.boardbackproject.repository.FavoriteRepository;
+import com.kimkh.boardbackproject.repository.SearchLogRepository;
 import com.kimkh.boardbackproject.repository.UserRepository;
 import com.kimkh.boardbackproject.repository.resultSet.CommentListResultSet;
 import com.kimkh.boardbackproject.service.BoardService;
@@ -53,7 +56,7 @@ public class BoardServiceImplement implements BoardService{
     private final CommentRepository commentRepository;
     private final BoardViewRepository boardViewRepository;
     private final BoardImageRepository boardImageRepository;
-
+    private final SearchLogRepository searchLogRepository;
     private final FavoriteRepository favoriteRepository;
 
     @Override
@@ -342,6 +345,32 @@ public class BoardServiceImplement implements BoardService{
         }
 
         return GetTop3BoardListResponseDto.success(boardViewEntities);
+    }
+
+    @Override
+    public ResponseEntity<? super GetSearchBoardListReponseDto> getSearchBoardList(String searchWord, String preSearchWord) {
+       
+        List<BoardViewEntity> boardViewEntities = new ArrayList<>();
+       
+        try {
+
+            boardViewEntities = boardViewRepository.findByTitleContainsOrContentContainsOrderByWriteDatetimeDesc( searchWord,  searchWord) ;
+            // 일반 검색 기록, 한번 사용될 기록 여부
+            boolean relation = preSearchWord != null;
+
+            SearchLogEntity searchLogEntity = new SearchLogEntity(searchWord, preSearchWord, relation);
+            searchLogRepository.save(searchLogEntity);         
+               
+            if(relation){
+                searchLogEntity = new SearchLogEntity(preSearchWord, searchWord, relation);
+                searchLogRepository.save(searchLogEntity);  
+            }
+            
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+        return GetSearchBoardListReponseDto.success(boardViewEntities);
     }
 
         
