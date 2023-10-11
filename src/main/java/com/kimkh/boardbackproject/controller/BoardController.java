@@ -21,6 +21,7 @@ import com.kimkh.boardbackproject.dto.response.board.DeleteBoardResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.GetBoardResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.GetFavoriteListResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.GetLatestBoardListResponseDto;
+import com.kimkh.boardbackproject.dto.response.board.GetSearchBoardListReponseDto;
 import com.kimkh.boardbackproject.dto.response.board.GetTop3BoardListResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.GetUserBoardListResponseDto;
 import com.kimkh.boardbackproject.dto.response.board.IncreaseViewCountResponseDto;
@@ -80,6 +81,15 @@ public class BoardController {
     @GetMapping("/top-3")
     public ResponseEntity<? super GetTop3BoardListResponseDto> getTop3BoardList(){
         ResponseEntity<? super GetTop3BoardListResponseDto> response = boardService.getTop3BoardList();
+        return response;
+    }
+
+    @GetMapping(value={"/searchlist/{searchWord}" , "/searchlist/{searchWord}/{preSearchWord}"})
+    public ResponseEntity<? super GetSearchBoardListReponseDto> getSearchBoardList(
+       @PathVariable("searchWrod") String searchWord,
+       @PathVariable(value = "preSearchWord", required = false) String preSearchWord
+    ){
+        ResponseEntity<? super GetSearchBoardListReponseDto>   response =  boardService.getSearchBoardList(searchWord, preSearchWord);
         return response;
     }
 
