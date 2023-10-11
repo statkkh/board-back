@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import com.kimkh.boardbackproject.dto.request.user.PatchNicknameRequestDto;
+import com.kimkh.boardbackproject.dto.request.user.PatchProfileImageRequestDto;
 import com.kimkh.boardbackproject.dto.response.user.GetSignInUserResponseDto;
 import com.kimkh.boardbackproject.dto.response.user.GetUserResponseDto;
 import com.kimkh.boardbackproject.dto.response.user.PatchNicknameResponseDto;
+import com.kimkh.boardbackproject.dto.response.user.PatchProfileImageResponseDto;
 import com.kimkh.boardbackproject.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -50,5 +52,15 @@ public class UserController {
         ResponseEntity<? super PatchNicknameResponseDto> response = userService.patchNickname(requestBody, email);
         return response;
     }
+
+    @PatchMapping("/profile-image")
+    public ResponseEntity<? super PatchProfileImageResponseDto> patchProfileImage(
+        @RequestBody @Valid PatchProfileImageRequestDto requestbody,
+        @AuthenticationPrincipal String email
+    ){
+        ResponseEntity<? super PatchProfileImageResponseDto> response = userService.patchProfileImage(requestbody, email);
+        return response;
+    }
+
 
 }
