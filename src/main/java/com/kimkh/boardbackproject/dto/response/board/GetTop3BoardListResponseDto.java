@@ -2,8 +2,13 @@ package com.kimkh.boardbackproject.dto.response.board;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
 import com.kimkh.boardbackproject.common.object.BoardListItem;
+import com.kimkh.boardbackproject.dto.response.ResponseCode;
 import com.kimkh.boardbackproject.dto.response.ResponseDto;
+import com.kimkh.boardbackproject.dto.response.ResponseMessage;
 import com.kimkh.boardbackproject.entity.BoardViewEntity;
 
 import lombok.Getter;
@@ -16,5 +21,10 @@ public class GetTop3BoardListResponseDto extends ResponseDto{
     private GetTop3BoardListResponseDto(String code ,String message , List<BoardViewEntity> boardViewEntities){
         super(code, message);
         this.top3List = BoardListItem.getList(boardViewEntities);
+    }
+
+    public static ResponseEntity<GetTop3BoardListResponseDto> success(List<BoardViewEntity> boardViewEntities){
+        GetTop3BoardListResponseDto result = new GetTop3BoardListResponseDto(ResponseCode.SUCCESS, ResponseMessage.SUCCESS, boardViewEntities);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 }
