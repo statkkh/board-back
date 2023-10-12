@@ -11,11 +11,14 @@ import com.kimkh.boardbackproject.dto.response.ResponseDto;
 import com.kimkh.boardbackproject.dto.response.ResponseMessage;
 import com.kimkh.boardbackproject.repository.resultSet.SearchWordResultSet;
 
+import lombok.Getter;
+
+@Getter
 public class GetRelationWordListResponseDto extends ResponseDto {
     
     private List<String> relativeWordList;
 
-    private GetRelationWordListResponseDto(String code ,String message , List<SearchWordResultSet> resultSets){
+    private GetRelationWordListResponseDto(String code,String message, List<SearchWordResultSet> resultSets){
         super(code, message);
         List<String> relativeWordList = new ArrayList<>();
         for(SearchWordResultSet resultSet : resultSets){
@@ -25,7 +28,7 @@ public class GetRelationWordListResponseDto extends ResponseDto {
         this.relativeWordList = relativeWordList;
     }
 
-    public static ResponseEntity< GetRelationWordListResponseDto > success(List<SearchWordResultSet> resultSets){
+    public static ResponseEntity< GetRelationWordListResponseDto> success(List<SearchWordResultSet> resultSets){
         GetRelationWordListResponseDto result =new GetRelationWordListResponseDto(ResponseCode.SUCCESS, ResponseMessage.SUCCESS, resultSets);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }

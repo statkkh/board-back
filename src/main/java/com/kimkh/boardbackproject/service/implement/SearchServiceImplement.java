@@ -7,7 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.kimkh.boardbackproject.dto.response.ResponseDto;
-import com.kimkh.boardbackproject.dto.response.Search.GetPopularListResponseDto;
+import com.kimkh.boardbackproject.dto.response.search.GetPopularListResponseDto;
+import com.kimkh.boardbackproject.dto.response.search.GetRelationWordListResponseDto;
 import com.kimkh.boardbackproject.repository.SearchLogRepository;
 import com.kimkh.boardbackproject.repository.resultSet.SearchWordResultSet;
 import com.kimkh.boardbackproject.service.SearchService;
@@ -35,6 +36,24 @@ public class SearchServiceImplement implements SearchService {
         }
 
         return GetPopularListResponseDto.success(resultSets);
+    }
+
+    @Override
+    public ResponseEntity<? super GetRelationWordListResponseDto> getRelationList(String searchWord) {
+
+        List<SearchWordResultSet> resultSets = new ArrayList<>();
+
+        try {
+            
+            resultSets = searchLogRepository.getRelationWordList(searchWord);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return GetRelationWordListResponseDto.success(resultSets);
+
     }
     
 }

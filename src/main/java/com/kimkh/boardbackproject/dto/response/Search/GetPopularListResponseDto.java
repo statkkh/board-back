@@ -1,4 +1,4 @@
-package com.kimkh.boardbackproject.dto.response.Search;
+package com.kimkh.boardbackproject.dto.response.search;
 
 import java.util.ArrayList;
 import java.util.List;
