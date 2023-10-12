@@ -23,6 +23,7 @@ public interface SearchLogRepository extends JpaRepository<SearchLogEntity, Inte
         nativeQuery = true
     )
 
+
     List<SearchWordResultSet> getPopularWordList();
-    
+
 }
