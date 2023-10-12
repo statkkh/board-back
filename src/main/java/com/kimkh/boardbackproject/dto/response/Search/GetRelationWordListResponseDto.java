@@ -29,7 +29,7 @@ public class GetRelationWordListResponseDto extends ResponseDto {
     }
 
     public static ResponseEntity< GetRelationWordListResponseDto> success(List<SearchWordResultSet> resultSets){
-        GetRelationWordListResponseDto result =new GetRelationWordListResponseDto(ResponseCode.SUCCESS, ResponseMessage.SUCCESS, resultSets);
+        GetRelationWordListResponseDto result = new GetRelationWordListResponseDto(ResponseCode.SUCCESS, ResponseMessage.SUCCESS, resultSets);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 }
