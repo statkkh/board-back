@@ -355,10 +355,10 @@ public class BoardServiceImplement implements BoardService{
         try {
 
             boardViewEntities = boardViewRepository.findByTitleContainsOrContentContainsOrderByWriteDatetimeDesc( searchWord,  searchWord) ;
-            // 일반 검색 기록, 한번 사용될 기록 여부
+            // description :일반 검색 기록, 한번 사용될 기록 여부 //
             boolean relation = preSearchWord != null;
 
-            SearchLogEntity searchLogEntity = new SearchLogEntity(searchWord, preSearchWord, relation);
+            SearchLogEntity searchLogEntity = new SearchLogEntity(searchWord, preSearchWord, false);
             searchLogRepository.save(searchLogEntity);         
                
             if(relation){
